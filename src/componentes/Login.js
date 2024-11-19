@@ -42,54 +42,121 @@ function Login() {
     }
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px' }}>
-            <h2>Login - Projeto RH</h2>
-            {/* Usa o onSubmit no formulário */}
-            <form
-                style={{ display: 'flex', flexDirection: 'column', width: '300px' }}
-                onSubmit={handleLogin}
-            >
-                <label>
-                    Usuário: <input
+        <div style={{
+            display: 'flex',
+            height: '100vh',
+            width: '100vw',
+        }}>
+            {/* Seção de Login */}
+            <div style={{
+                flex: 1,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: '#74b3b8',
+                padding: '20px',
+            }}>
+                <h2>Welcome Back</h2>
+                <p style={{ textAlign: 'center' }}>
+                    To keep connected with us <br />
+                    please login with your personal info
+                </p>
+
+                <form
+                    style={{ display: 'flex', flexDirection: 'column', width: '300px' }}
+                    onSubmit={handleLogin}
+                >
+
+
+                    <input
                         type="text"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
+                        placeholder='Username:'
                         style={{ padding: '8px', marginBottom: '10px', marginTop: '5px' }}
                         required
                     />
-                </label>
-                <label>
-                    Senha:<input
+
+
+
+                    <input
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        placeholder='Password::'
                         style={{ padding: '8px', marginBottom: '20px', marginTop: '5px' }}
                         required
                     />
-                </label>
-                {/* Botão sem onClick, já que o onSubmit cuida disso */}
-                <button
-                    type="submit"
-                    style={{ padding: '5px', backgroundColor: '#4CAF50', color: 'white', border: 'none' }}
+
+                    <button
+                        type="submit"
+                        style={{
+                            padding: '10px',
+                            backgroundColor: '#4CAF50',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '10px',
+                        }}
+                    >
+                        SIGN IN
+                    </button>
+                </form>
+
+                {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+            </div>
+
+            {/* Seção de Criação de Conta */}
+            <div style={{
+                flex: 1,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: '#ffffff',
+                padding: '20px',
+            }}>
+                <h2>Creat Account </h2>
+                <p style={{ textAlign: 'center' }}>
+                    Fill in the information below to create an account.
+                </p>
+
+                <form
+                    style={{ display: 'flex', flexDirection: 'column', width: '300px' }}
                 >
-                    Entrar
-                </button>
 
-                <button
-                    type="button"
-                    style={{ padding: '5px', backgroundColor: '#4CAF50', color: 'white', border: 'none' }}
-                    onClick={redirectCadastro}
-                >
-                    Cadastrar
-                </button>
-            </form>
+                    <input type="text"
+                        placeholder='Name'
+                        style={{ padding: '8px', marginBottom: '10px', marginTop: '5px' }}
+                        required />
 
-            {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+                    <input type="email"
+                        placeholder="E-mail"
+                        style={{ padding: '8px', marginBottom: '10px', marginTop: '5px' }}
+                        required />
 
-            <p>
-                Esse projeto é a complementação de um projeto de um APP de RH. <br />
-                Utilizei o ReactJs no Front end e Java - Spring Boot no BackEnd.
-            </p>
+
+                    <input
+                        type="password"
+                        placeholder='Password'
+                        style={{ padding: '8px', marginBottom: '20px', marginTop: '5px' }}
+                        required
+                    />
+                    <button
+                        type="button"
+                        onClick={redirectCadastro}
+                        style={{
+                            padding: '10px',
+                            backgroundColor: '#4CAF50',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '10px',
+                        }}
+                    >
+                        SIGN UP
+                    </button>
+                </form>
+            </div>
         </div>
     );
 }
