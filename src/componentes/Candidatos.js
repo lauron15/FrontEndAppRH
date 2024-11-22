@@ -31,6 +31,7 @@ export const Candidatos = () => {
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 90 },
+        { field: 'rg', headerName: 'RG', width: 150 },
         { field: 'nome', headerName: 'Nome', width: 150 },
         { field: 'email', headerName: 'Email', width: 200 },
         // Adicione outras colunas conforme necessário
@@ -56,6 +57,22 @@ export const Candidatos = () => {
                     disableRowSelectionOnClick
                 />
             )}
+
+            <div style={{ marginLeft: '20px' }}>
+                <button
+                    style={{
+                        padding: '10px 20px',
+                        backgroundColor: '#007BFF',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '4px',
+                        cursor: 'pointer'
+                    }}
+                    onClick={() => console.log('Botão clicado')}
+                >
+                    Cadastrar Candidatos
+                </button>
+            </div>
         </div>
     );
 };
