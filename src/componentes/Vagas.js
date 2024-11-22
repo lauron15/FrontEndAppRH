@@ -2,7 +2,7 @@ function Vagas() {
     return (
         <div>
             <h2>
-                Minhas Vagas
+                Aqui listarei as vagas com o material ui.
             </h2>
         </div>
     )

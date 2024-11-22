@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
     const [username, setUsername] = useState('');
+    const [usernameCadastro, setUsernameCadastro] = useState('');
     const [password, setPassword] = useState('');
+    const [passwordCadastro, setPasswordCadastro] = useState('');
+    const [email, setEmail] = useState('');
+    const [emailCadastro, setEmailCadastro] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [errorMessageCadastro, setErrorMessageCadastro] = useState('');
+
+    const [loading, setLoading] = useState(false);
+
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
@@ -16,18 +24,21 @@ function Login() {
         }
 
         try {
-            const response = await fetch('http://localhost:8080/usuario', {
+            const response = await fetch('http://localhost:8080/usuario/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ nome: username, senha: password }),
+                body: JSON.stringify({ nome: username, senha: password, email: email }),
             });
 
 
             if (response.ok) {
-                console.log("Chegou aqui");
-                navigate('/vagas');
+                const data = await response.json(); // Captura os dados JSON da resposta
+                localStorage.setItem("token", data); // Exemplo de uso do token
+                window.alert("Usuário logado com sucesso.");
+                navigate('/home');
+                document.location.reload(); // Atualiza a página, se necessário
             } else {
                 setErrorMessage('Usuário ou senha incorretos!');
             }
@@ -37,9 +48,50 @@ function Login() {
         }
     };
 
-    const redirectCadastro = () => {
-        navigate('/vagas')
-    }
+
+    const handleCadastro = async (e) => {
+        e.preventDefault(); // Evita o comportamento padrão de recarregar a página
+
+        if (!usernameCadastro || !passwordCadastro || !email) {
+            setErrorMessageCadastro('Por favor, preencha os campos corretamente.');
+            return;
+        }
+
+        if (loading == true)
+            window.alert("Carregando.")
+        else
+            try {
+                setLoading(true);
+
+                const response = await fetch('http://localhost:8080/usuario', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ nome: usernameCadastro, senha: passwordCadastro, email: emailCadastro }),
+                });
+
+
+                if (response.ok) {
+                    console.log(response);
+                    setEmailCadastro("");
+                    setUsernameCadastro("");
+                    setPasswordCadastro("");
+                    setLoading(false);
+                    window.alert("Usuário criado com sucesso!.")
+
+                } else {
+                    setErrorMessageCadastro('Usuário ou senha incorretos!');
+                    setLoading(false);
+                }
+            } catch (error) {
+                console.error('Erro ao tentar logar:', error);
+                setErrorMessage('Erro ao fazer login. Tente novamente.');
+            }
+    };
+
+
+    useEffect(() => { }, [email, usernameCadastro, passwordCadastro])
 
     return (
         <div style={{
@@ -78,6 +130,12 @@ function Login() {
                         required
                     />
 
+                    <input type="email"
+                        placeholder="E-mail"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        style={{ padding: '8px', marginBottom: '10px', marginTop: '5px' }}
+                        required />
 
 
                     <input
@@ -127,11 +185,8 @@ function Login() {
 
                     <input type="text"
                         placeholder='Name'
-                        style={{ padding: '8px', marginBottom: '10px', marginTop: '5px' }}
-                        required />
-
-                    <input type="email"
-                        placeholder="E-mail"
+                        value={usernameCadastro}
+                        onChange={(e) => setUsernameCadastro(e.target.value)}
                         style={{ padding: '8px', marginBottom: '10px', marginTop: '5px' }}
                         required />
 
@@ -139,12 +194,22 @@ function Login() {
                     <input
                         type="password"
                         placeholder='Password'
+                        value={passwordCadastro}
+                        onChange={(e) => setPasswordCadastro(e.target.value)}
                         style={{ padding: '8px', marginBottom: '20px', marginTop: '5px' }}
                         required
                     />
+
+                    <input type="email"
+                        placeholder="E-mail"
+                        value={emailCadastro}
+                        onChange={(e) => setEmailCadastro(e.target.value)}
+                        style={{ padding: '8px', marginBottom: '10px', marginTop: '5px' }}
+                        required />
                     <button
                         type="button"
-                        onClick={redirectCadastro}
+                        value={passwordCadastro}
+                        onClick={handleCadastro}
                         style={{
                             padding: '10px',
                             backgroundColor: '#4CAF50',
@@ -155,6 +220,8 @@ function Login() {
                     >
                         SIGN UP
                     </button>
+
+                    {errorMessageCadastro && <p style={{ color: 'red' }}>{errorMessageCadastro}</p>}
                 </form>
             </div>
         </div>
