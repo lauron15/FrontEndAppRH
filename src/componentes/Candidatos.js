@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { toast } from 'react-toastify';
+import { Link, useNavigate } from 'react-router-dom'
+import { Button } from '@mui/material';
 
 export const Candidatos = () => {
     const [candidatos, setCandidatos] = useState([]); // Inicialize como array
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     const carregarCandidato = () => {
         setLoading(true);
@@ -25,6 +28,10 @@ export const Candidatos = () => {
             });
     };
 
+    const RedirecionarCadastroCandidato = () => {
+        navigate("/cadastrarCandidato");
+    }
+
     useEffect(() => {
         carregarCandidato(); // Carregar candidatos ao montar o componente
     }, []);
@@ -33,45 +40,48 @@ export const Candidatos = () => {
         { field: 'id', headerName: 'ID', width: 90 },
         { field: 'rg', headerName: 'RG', width: 150 },
         { field: 'nome', headerName: 'Nome', width: 150 },
-        { field: 'email', headerName: 'Email', width: 200 },
         // Adicione outras colunas conforme necessário
     ];
 
-    return (
-        <div style={{ height: 400, width: '100%' }}>
-            {loading ? (
-                <p>Carregando...</p>
-            ) : (
-                <DataGrid
-                    rows={candidatos}
-                    columns={columns}
-                    initialState={{
-                        pagination: {
-                            paginationModel: {
-                                pageSize: 5,
-                            },
-                        },
-                    }}
-                    pageSizeOptions={[5]}
-                    checkboxSelection
-                    disableRowSelectionOnClick
-                />
-            )}
 
-            <div style={{ marginLeft: '20px' }}>
-                <button
-                    style={{
-                        padding: '10px 20px',
-                        backgroundColor: '#007BFF',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '4px',
-                        cursor: 'pointer'
-                    }}
-                    onClick={() => console.log('Botão clicado')}
-                >
-                    Cadastrar Candidatos
-                </button>
+    return (
+        <div>
+            <div className="row">
+                <div className="col-6">
+                    <div className="d-flex align-items-center justify-content-between">
+                        <h2>Candidatos</h2>
+                        <Button
+                            className="btn btn-outline-primary"
+                            onClick={RedirecionarCadastroCandidato}
+                        >
+                            Cadastrar Candidatos
+                        </Button>
+                    </div>
+                </div>
+            </div>
+
+            <div className='row mt-3'>
+                <div className='col'>
+
+                    {loading ? (
+                        <p>Carregando...</p>
+                    ) : (
+                        <DataGrid
+                            rows={candidatos}
+                            columns={columns}
+                            initialState={{
+                                pagination: {
+                                    paginationModel: {
+                                        pageSize: 5,
+                                    },
+                                },
+                            }}
+                            pageSizeOptions={[5]}
+                            checkboxSelection
+                            disableRowSelectionOnClick
+                        />
+                    )}
+                </div>
             </div>
         </div>
     );

@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { toast } from 'react-toastify';
+import { Link, useNavigate } from 'react-router-dom'
+import { Button } from '@mui/material';
+
 
 export const Vagas = () => {
 
     const [vagas, setVagas] = useState([]); // Inicialize como array
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     const carregarVaga = () => {
         setLoading(true);
@@ -26,6 +30,10 @@ export const Vagas = () => {
             });
     };
 
+    const RedirecionarCadastroVagas = () => {
+        navigate("/cadastrarVagas");
+    }
+
     useEffect(() => {
         carregarVaga();
     }, []);
@@ -38,41 +46,58 @@ export const Vagas = () => {
     ];
 
     return (
-        <div style={{ height: 400, width: '100%' }}>
-            {loading ? (
-                <p>Carregando...</p>
-            ) : (
-                <DataGrid
-                    rows={vagas}
-                    columns={columns}
-                    initialState={{
-                        pagination: {
-                            paginationModel: {
-                                pageSize: 5,
+
+        <div>
+            <div className="row">
+                <div className="col-6">
+                    <div className="d-flex align-items-center justify-content-between">
+                        <h2>Vagas</h2>
+                        <Button
+                            className="btn btn-outline-primary"
+                            onClick={RedirecionarCadastroVagas}
+                        >
+                            Cadastrar Vagas
+                        </Button>
+                    </div>
+                </div>
+            </div>
+
+            <div style={{ height: 400, width: '100%' }}>
+                {loading ? (
+                    <p>Carregando...</p>
+                ) : (
+                    <DataGrid
+                        rows={vagas}
+                        columns={columns}
+                        initialState={{
+                            pagination: {
+                                paginationModel: {
+                                    pageSize: 5,
+                                },
                             },
-                        },
-                    }}
-                    pageSizeOptions={[5]}
-                    checkboxSelection
-                    disableRowSelectionOnClick
+                        }}
+                        pageSizeOptions={[5]}
+                        checkboxSelection
+                        disableRowSelectionOnClick
 
-                />
+                    />
 
-            )}
-            <div style={{ marginLeft: '20px' }}>
-                <button
-                    style={{
-                        padding: '10px 20px',
-                        backgroundColor: '#007BFF',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '4px',
-                        cursor: 'pointer'
-                    }}
-                    onClick={() => console.log('Botão clicado')}
-                >
-                    Cadastrar Vagas
-                </button>
+                )}
+                <div style={{ marginLeft: '20px' }}>
+                    <button
+                        style={{
+                            padding: '10px 20px',
+                            backgroundColor: '#007BFF',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '4px',
+                            cursor: 'pointer'
+                        }}
+                        onClick={() => console.log('Botão clicado')}
+                    >
+                        Cadastrar Vagas
+                    </button>
+                </div>
             </div>
         </div>
     );

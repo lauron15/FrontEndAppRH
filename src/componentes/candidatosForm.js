@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import BuscarItem from '../Utils/BuscarItem';
 
 const InitialCandidato = {
     id: 0,
@@ -34,12 +33,12 @@ export const CandidatoForm = () => {
         return true;
     };
 
-    const carregarCandidato = async () => {
+    const carregarCandidato = () => {
         try {
             setLoading(true);
-            const response = await fetch(`/api/candidato/${candidatoId}`);
+            const response = fetch(`/api/candidato/${candidatoId}`);
             if (!response.ok) throw new Error('Erro ao carregar candidato');
-            const data = await response.json();
+            const data = response.json();
             setCandidato(data);
         } catch (error) {
             toast.error('Houve um erro ao carregar os Candidatos');
@@ -95,7 +94,7 @@ export const CandidatoForm = () => {
     };
 
     useEffect(() => {
-        if (candidatoId && candidatoId !== '0') {
+        if (candidatoId != null && candidatoId !== '0') {
             carregarCandidato();
         }
     }, [candidatoId]);
@@ -162,18 +161,18 @@ export const CandidatoForm = () => {
             <div className="row mt-3">
                 <div className="col">
                     <div className="form-group row">
-                        <label htmlFor="vagaId" className="col-2 col-form-label">
-                            Vaga
+                        <label htmlFor="candidatoId" className="col-2 col-form-label">
+                            Candidato
                         </label>
                         <div className="col-6">
-                            <BuscarItem
-                                path="api/vaga"
-                                placeholder="Informe a vaga"
+                            {/* <BuscarItem
+                                path="api/candidato"
+                                placeholder="Informe o candidato"
                                 recebeItem={(data) => {
-                                    if (data) handleChange({ target: { value: data.id, name: 'vagaId' } });
+                                    if (data) handleChange({ target: { value: data.id, name: 'candidatoId' } });
                                 }}
-                                idItem={candidato.vagaId}
-                            />
+                                idItem={vaga.candidatoId}
+                            /> */}
                         </div>
                     </div>
                 </div>
