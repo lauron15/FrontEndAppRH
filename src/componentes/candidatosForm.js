@@ -33,12 +33,12 @@ export const CandidatoForm = () => {
         return true;
     };
 
-    const carregarCandidato = () => {
+    const carregarCandidato = async () => {
         try {
             setLoading(true);
-            const response = fetch(`/api/candidato/${candidatoId}`);
+            const response = await fetch(`/api/candidato/${candidatoId}`);
             if (!response.ok) throw new Error('Erro ao carregar candidato');
-            const data = response.json();
+            const data = await response.json();
             setCandidato(data);
         } catch (error) {
             toast.error('Houve um erro ao carregar os Candidatos');
@@ -100,93 +100,83 @@ export const CandidatoForm = () => {
     }, [candidatoId]);
 
     return (
-        <div className="row">
-            <div className="col">
-                <h2>{candidatoId !== '0' ? 'Editar candidato' : 'Criar candidato'}</h2>
+        <div className="container mt-4">
+            <div className="row mb-4">
+                <div className="col text-center">
+                    <h2>{candidatoId !== '0' ? 'Atualizar Candidato' : 'Criar Candidato'}</h2>
+                </div>
             </div>
 
             {candidatoId !== '0' && (
-                <div className="row">
-                    <div className="col">
-                        <div className="form-group row">
-                            <label htmlFor="id" className="col-2 col-form-label">
-                                Id
-                            </label>
-                            <div className="col-6">
-                                <input type="text" className="form-control" disabled value={candidato.id} />
-                            </div>
-                        </div>
+                <div className="row mb-3">
+                    <div className="col text-center">
+                        <label htmlFor="id" className="form-label">
+                            Id do Candidato
+                        </label>
+                        <input
+                            type="text"
+                            className="form-control w-50 mx-auto"
+                            id="id"
+                            disabled
+                            value={candidato.id}
+                        />
                     </div>
                 </div>
             )}
 
-            <div className="row mt-3">
-                <div className="col">
-                    <div className="form-group row">
-                        <label htmlFor="rg" className="col-2 col-form-label">
-                            RG
-                        </label>
-                        <div className="col-6">
-                            <input
-                                type="text"
-                                className="form-control"
-                                name="rg"
-                                value={candidato.rg}
-                                onChange={handleChange}
-                            />
-                        </div>
-                    </div>
+            <div className="row mb-3">
+                <div className="col text-center">
+                    <label htmlFor="rg" className="form-label">
+                        RG do Candidato
+                    </label>
+                    <input
+                        type="text"
+                        className="form-control w-50 mx-auto"
+                        id="rg"
+                        name="rg"
+                        value={candidato.rg}
+                        onChange={handleChange}
+                    />
                 </div>
             </div>
 
-            <div className="row mt-3">
-                <div className="col">
-                    <div className="form-group row">
-                        <label htmlFor="nomecandidato" className="col-2 col-form-label">
-                            Nome do Candidato
-                        </label>
-                        <div className="col-6">
-                            <input
-                                type="text"
-                                className="form-control"
-                                name="nomecandidato"
-                                value={candidato.nomecandidato}
-                                onChange={handleChange}
-                            />
-                        </div>
-                    </div>
+            <div className="row mb-3">
+                <div className="col text-center">
+                    <label htmlFor="nomecandidato" className="form-label">
+                        Nome do Candidato
+                    </label>
+                    <input
+                        type="text"
+                        className="form-control w-50 mx-auto"
+                        id="nomecandidato"
+                        name="nomecandidato"
+                        value={candidato.nomecandidato}
+                        onChange={handleChange}
+                    />
                 </div>
             </div>
 
-            <div className="row mt-3">
+            <div className="row mb-4 text-center">
                 <div className="col">
-                    <div className="form-group row">
-                        <label htmlFor="candidatoId" className="col-2 col-form-label">
-                            Candidato
-                        </label>
-                        <div className="col-6">
-                            {/* <BuscarItem
-                                path="api/candidato"
-                                placeholder="Informe o candidato"
-                                recebeItem={(data) => {
-                                    if (data) handleChange({ target: { value: data.id, name: 'candidatoId' } });
-                                }}
-                                idItem={vaga.candidatoId}
-                            /> */}
-                        </div>
-                    </div>
+                    {/* Placeholder para componente adicional */}
                 </div>
             </div>
 
-            <div className="row mt-3">
-                <div className="col-1">
-                    <button className="btn btn-success mr-2" onClick={salvarCandidato} disabled={loading}>
+            <div className="row text-center">
+                <div className="col">
+                    <button
+                        className="btn btn-success me-3"
+                        onClick={salvarCandidato}
+                        disabled={loading}
+                    >
                         {candidatoId !== '0' ? 'Atualizar' : 'Salvar'}
                     </button>
-                </div>
-                <div className="col">
                     {candidatoId !== '0' && (
-                        <button className="btn btn-outline-danger ml-2" onClick={deletarCandidato} disabled={loading}>
+                        <button
+                            className="btn btn-danger"
+                            onClick={deletarCandidato}
+                            disabled={loading}
+                        >
                             Deletar
                         </button>
                     )}

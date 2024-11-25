@@ -41,6 +41,7 @@ export const Candidatos = () => {
         { field: 'rg', headerName: 'RG', width: 150 },
         { field: 'nome', headerName: 'Nome', width: 150 },
         // Adicione outras colunas conforme necessário
+
     ];
 
 

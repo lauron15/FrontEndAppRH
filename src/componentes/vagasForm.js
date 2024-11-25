@@ -17,30 +17,19 @@ export const VagasForm = () => {
     const { vagaId } = useParams();
     const navigate = useNavigate();
 
-    const validate = () => {
-        if (!vaga.rg) {
-            toast.error('Informe o RG');
-            return false;
-        }
-        if (!vaga.nomevaga) {
-            toast.error('Informe o nome da vaga');
-            return false;
-        }
-        if (vaga.candidatoId === 0) {
-            toast.error('Informe qual candidato irá ocupar a vaga');
-            return false;
-        }
-        return true;
-    };
+    const validate = () =>
+        vaga.rg && vaga.nomevaga && vaga.candidatoId !== 0
+            ? true
+            : (toast.error(vaga.rg ? (vaga.nomevaga ? 'Informe o candidato' : 'Informe o nome da vaga') : 'Informe o RG'), false);
 
-    const carregarVaga = () => {
+    const carregarVaga = async () => {
+        setLoading(true);
         try {
-            setLoading(true);
-            const response = fetch(`/api/vaga/${vagaId}`);
-            if (!response.ok) throw new Error('Erro ao carregar vaga');
-            const data = response.json();
+            const response = await fetch(`/api/vaga/${vagaId}`);
+            if (!response.ok) throw new Error();
+            const data = await response.json();
             setVaga(data);
-        } catch (error) {
+        } catch {
             toast.error('Houve um erro ao carregar as vagas');
         } finally {
             setLoading(false);
@@ -49,30 +38,23 @@ export const VagasForm = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setVaga((prevState) => ({
-            ...prevState,
-            [name]: value,
-        }));
+        setVaga((prevState) => ({ ...prevState, [name]: value }));
     };
 
     const salvarVaga = async () => {
         if (!validate()) return;
-
         const method = vagaId !== '0' ? 'PUT' : 'POST';
         const url = vagaId !== '0' ? `/api/vaga/${vagaId}` : '/api/vaga';
-
         try {
             const response = await fetch(url, {
                 method,
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(vaga),
             });
-
-            if (!response.ok) throw new Error('Erro ao salvar vaga');
-
+            if (!response.ok) throw new Error();
             toast.success('Vaga cadastrada com sucesso!');
             navigate('/vaga');
-        } catch (error) {
+        } catch {
             toast.error('Houve um erro ao cadastrar a vaga');
         }
     };
@@ -80,23 +62,18 @@ export const VagasForm = () => {
     const deletarVaga = async () => {
         if (window.confirm('Tem certeza que deseja deletar a vaga?')) {
             try {
-                const response = await fetch(`/api/vaga/${vagaId}`, {
-                    method: 'DELETE',
-                });
-                if (!response.ok) throw new Error('Erro ao deletar vaga');
-
+                const response = await fetch(`/api/vaga/${vagaId}`, { method: 'DELETE' });
+                if (!response.ok) throw new Error();
                 toast.success('Vaga deletada com sucesso!');
                 navigate('/vaga');
-            } catch (error) {
+            } catch {
                 toast.error('Houve um erro ao deletar a vaga');
             }
         }
     };
 
     useEffect(() => {
-        if (vagaId != null && vagaId !== '0') {
-            carregarVaga();
-        }
+        if (vagaId && vagaId !== '0') carregarVaga();
     }, [vagaId]);
 
     return (
@@ -109,9 +86,7 @@ export const VagasForm = () => {
                 <div className="row">
                     <div className="col">
                         <div className="form-group row">
-                            <label htmlFor="id" className="col-2 col-form-label">
-                                Id
-                            </label>
+                            <label htmlFor="id" className="col-2 col-form-label">Id</label>
                             <div className="col-6">
                                 <input type="text" className="form-control" disabled value={vaga.id} />
                             </div>
@@ -123,17 +98,9 @@ export const VagasForm = () => {
             <div className="row mt-3">
                 <div className="col">
                     <div className="form-group row">
-                        <label htmlFor="rg" className="col-2 col-form-label">
-                            RG
-                        </label>
+                        <label htmlFor="rg" className="col-2 col-form-label">RG</label>
                         <div className="col-6">
-                            <input
-                                type="text"
-                                className="form-control"
-                                name="rg"
-                                value={vaga.rg}
-                                onChange={handleChange}
-                            />
+                            <input type="text" className="form-control" name="rg" value={vaga.rg} onChange={handleChange} />
                         </div>
                     </div>
                 </div>
@@ -142,17 +109,9 @@ export const VagasForm = () => {
             <div className="row mt-3">
                 <div className="col">
                     <div className="form-group row">
-                        <label htmlFor="nomevaga" className="col-2 col-form-label">
-                            Nome da Vaga
-                        </label>
+                        <label htmlFor="nomevaga" className="col-2 col-form-label">Nome da Vaga</label>
                         <div className="col-6">
-                            <input
-                                type="text"
-                                className="form-control"
-                                name="nomevaga"
-                                value={vaga.nomevaga}
-                                onChange={handleChange}
-                            />
+                            <input type="text" className="form-control" name="nomevaga" value={vaga.nomevaga} onChange={handleChange} />
                         </div>
                     </div>
                 </div>
@@ -161,19 +120,8 @@ export const VagasForm = () => {
             <div className="row mt-3">
                 <div className="col">
                     <div className="form-group row">
-                        <label htmlFor="vagaId" className="col-2 col-form-label">
-                            Vaga
-                        </label>
-                        <div className="col-6">
-                            {/* <BuscarItem
-                                path="api/candidato"
-                                placeholder="Informe o candidato"
-                                recebeItem={(data) => {
-                                    if (data) handleChange({ target: { value: data.id, name: 'candidatoId' } });
-                                }}
-                                idItem={vaga.candidatoId}
-                            /> */}
-                        </div>
+                        <label htmlFor="vagaId" className="col-2 col-form-label">Vaga</label>
+                        <div className="col-6" />
                     </div>
                 </div>
             </div>
@@ -184,15 +132,14 @@ export const VagasForm = () => {
                         {vagaId !== '0' ? 'Atualizar' : 'Salvar'}
                     </button>
                 </div>
-                <div className="col">
-                    {vagaId !== '0' && (
+                {vagaId !== '0' && (
+                    <div className="col">
                         <button className="btn btn-outline-danger ml-2" onClick={deletarVaga} disabled={loading}>
                             Deletar
                         </button>
-                    )}
-                </div>
+                    </div>
+                )}
             </div>
         </div>
     );
 };
-
