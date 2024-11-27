@@ -1,3 +1,4 @@
+import { Grid, Grid2 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -37,7 +38,11 @@ export const CandidatoForm = () => {
         try {
             setLoading(true);
             const response = await fetch(`/api/candidato/${candidatoId}`);
-            if (!response.ok) throw new Error('Erro ao carregar candidato');
+            if (!response.ok) {
+                toast.error('Erro ao carregar candidato');
+                setLoading(false);
+                return;
+            }
             const data = await response.json();
             setCandidato(data);
         } catch (error) {
@@ -68,7 +73,11 @@ export const CandidatoForm = () => {
                 body: JSON.stringify(candidato),
             });
 
-            if (!response.ok) throw new Error('Erro ao salvar candidato');
+            if (!response.ok) {
+                toast.error('Erro ao salvar candidato');
+                setLoading(false);
+                return;
+            };
 
             toast.success('Candidato cadastrado com sucesso!');
             navigate('/candidato');
@@ -83,8 +92,11 @@ export const CandidatoForm = () => {
                 const response = await fetch(`/api/candidato/${candidatoId}`, {
                     method: 'DELETE',
                 });
-                if (!response.ok) throw new Error('Erro ao deletar candidato');
-
+                if (!response.ok) {
+                    toast.error('Erro ao deletar candidato');
+                    setLoading(false);
+                    return;
+                }
                 toast.success('Candidato deletado com sucesso!');
                 navigate('/candidato');
             } catch (error) {
@@ -100,88 +112,46 @@ export const CandidatoForm = () => {
     }, [candidatoId]);
 
     return (
-        <div className="container mt-4">
-            <div className="row mb-4">
-                <div className="col text-center">
-                    <h2>{candidatoId !== '0' ? 'Atualizar Candidato' : 'Criar Candidato'}</h2>
-                </div>
-            </div>
+        <div className='container' >
+            <div className='row mt-4'>
+                <div className='col'>
 
-            {candidatoId !== '0' && (
-                <div className="row mb-3">
-                    <div className="col text-center">
-                        <label htmlFor="id" className="form-label">
-                            Id do Candidato
-                        </label>
-                        <input
-                            type="text"
-                            className="form-control w-50 mx-auto"
-                            id="id"
-                            disabled
-                            value={candidato.id}
-                        />
+                    <div className='row mb-6'>
+                        <div className='col'>
+                            <h5> Cadastar Candidato</h5>
+                        </div>
+
+                        <div className='col'>
+                            <button type='button' className='btn btn-success' onClick={console.log("clicou no botão")}
+                            >
+                                Salvar
+                            </button>
+                        </div>
                     </div>
-                </div>
-            )}
 
-            <div className="row mb-3">
-                <div className="col text-center">
-                    <label htmlFor="rg" className="form-label">
-                        RG do Candidato
-                    </label>
-                    <input
-                        type="text"
-                        className="form-control w-50 mx-auto"
-                        id="rg"
-                        name="rg"
-                        value={candidato.rg}
-                        onChange={handleChange}
-                    />
+                    <div className='row mt-6'>
+                        <div className='col-1'>
+                            <label> RG</label>
+                        </div>
+                        <div className='col-2'>
+                            <input type="text" className='ml-6' name='rg' value={candidato.rg} onChange={handleChange} />
+                        </div>
+                    </div>
+
+                    <div className='row mt-2'>
+                        <div className='col-1'>
+                            <label> Nome</label>
+                        </div>
+                        <div className='col-2'>
+                            <input type="text" className='ml-6' name='nomecandidato' value={candidato.nomecandidato} onChange={handleChange} />
+                        </div>
+                    </div>
+
                 </div>
             </div>
+        </div >
 
-            <div className="row mb-3">
-                <div className="col text-center">
-                    <label htmlFor="nomecandidato" className="form-label">
-                        Nome do Candidato
-                    </label>
-                    <input
-                        type="text"
-                        className="form-control w-50 mx-auto"
-                        id="nomecandidato"
-                        name="nomecandidato"
-                        value={candidato.nomecandidato}
-                        onChange={handleChange}
-                    />
-                </div>
-            </div>
 
-            <div className="row mb-4 text-center">
-                <div className="col">
-                    {/* Placeholder para componente adicional */}
-                </div>
-            </div>
-
-            <div className="row text-center">
-                <div className="col">
-                    <button
-                        className="btn btn-success me-3"
-                        onClick={salvarCandidato}
-                        disabled={loading}
-                    >
-                        {candidatoId !== '0' ? 'Atualizar' : 'Salvar'}
-                    </button>
-                    {candidatoId !== '0' && (
-                        <button
-                            className="btn btn-danger"
-                            onClick={deletarCandidato}
-                            disabled={loading}
-                        >
-                            Deletar
-                        </button>
-                    )}
-                </div>
-            </div>
-        </div>
     );
 };
+

@@ -83,21 +83,7 @@ export const Vagas = () => {
                     />
 
                 )}
-                <div style={{ marginLeft: '20px' }}>
-                    <button
-                        style={{
-                            padding: '10px 20px',
-                            backgroundColor: '#007BFF',
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '4px',
-                            cursor: 'pointer'
-                        }}
-                        onClick={() => console.log('Botão clicado')}
-                    >
-                        Cadastrar Vagas
-                    </button>
-                </div>
+
             </div>
         </div>
     );

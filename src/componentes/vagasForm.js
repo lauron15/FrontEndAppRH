@@ -77,69 +77,60 @@ export const VagasForm = () => {
     }, [vagaId]);
 
     return (
-        <div className="row">
-            <div className="col">
-                <h2>{vagaId !== '0' ? 'Editar vaga' : 'Criar vaga'}</h2>
-            </div>
+        <div className='container'>
+            <div className='row mt-4'>
+                <div className='col'>
 
-            {vagaId !== '0' && (
-                <div className="row">
-                    <div className="col">
-                        <div className="form-group row">
-                            <label htmlFor="id" className="col-2 col-form-label">Id</label>
-                            <div className="col-6">
-                                <input type="text" className="form-control" disabled value={vaga.id} />
-                            </div>
+                    <div className='row mb-6'>
+                        <div className='col'>
+                            <h4>Cadastrar Vagas</h4>
+                        </div>
+
+                        <div className='col'>
+
+                            <button type='button' className='btn btn-success' onClick={console.log("cadastrou a vaga")}>
+                                Salvar
+                            </button>
                         </div>
                     </div>
-                </div>
-            )}
 
-            <div className="row mt-3">
-                <div className="col">
-                    <div className="form-group row">
-                        <label htmlFor="rg" className="col-2 col-form-label">RG</label>
-                        <div className="col-6">
-                            <input type="text" className="form-control" name="rg" value={vaga.rg} onChange={handleChange} />
+                    <div className='row mt-6'>
+                        <div className='col-1'>
+                            <label>Nome:</label>
+                        </div>
+                        <div className='col-2'>
+                            <input type='text' className='ml-6' name='nome' value={vaga.nome} onChange={handleChange}></input>
+
+                        </div>
+
+                    </div>
+
+                    <div className='row mt-2'>
+
+                        <div className='col-1'>
+                            <label>
+                                Descrição:
+                            </label>
+                        </div>
+                        <div className='col-2'>
+                            <input type="text" className='ml-6' name='descricao' value={vaga.descricao} onClick={handleChange}></input>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <div className="row mt-3">
-                <div className="col">
-                    <div className="form-group row">
-                        <label htmlFor="nomevaga" className="col-2 col-form-label">Nome da Vaga</label>
-                        <div className="col-6">
-                            <input type="text" className="form-control" name="nomevaga" value={vaga.nomevaga} onChange={handleChange} />
+                    <div className='row mt-2'>
+                        <div className='col-1'>
+                            <label>Candidato:</label>
                         </div>
-                    </div>
-                </div>
-            </div>
+                        <div className='col-2'>
+                            <input type="text" className='ml-6' name='candidato' value={vaga.candidato}></input>
+                        </div>
 
-            <div className="row mt-3">
-                <div className="col">
-                    <div className="form-group row">
-                        <label htmlFor="vagaId" className="col-2 col-form-label">Vaga</label>
-                        <div className="col-6" />
                     </div>
-                </div>
-            </div>
 
-            <div className="row mt-3">
-                <div className="col-1">
-                    <button className="btn btn-success mr-2" onClick={salvarVaga} disabled={loading}>
-                        {vagaId !== '0' ? 'Atualizar' : 'Salvar'}
-                    </button>
                 </div>
-                {vagaId !== '0' && (
-                    <div className="col">
-                        <button className="btn btn-outline-danger ml-2" onClick={deletarVaga} disabled={loading}>
-                            Deletar
-                        </button>
-                    </div>
-                )}
             </div>
         </div>
     );
 };
+
+
